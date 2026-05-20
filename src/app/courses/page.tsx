@@ -27,7 +27,7 @@ export default function CoursesPage() {
           <div className="space-y-5 max-w-4xl mx-auto">
             {coursesList.map((course, i) => (
               <AnimatedSection key={course.id} delay={i * 0.08}>
-                <Link href="/contact" className="card p-8 block group hover:border-brand-300 transition-colors duration-300">
+                <Link href={`/courses/${course.id}`} className="card p-8 block group hover:border-brand-300 transition-colors duration-300">
                   <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-3">

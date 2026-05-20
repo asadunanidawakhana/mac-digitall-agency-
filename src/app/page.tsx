@@ -163,7 +163,7 @@ export default function HomePage() {
               <div className="space-y-4">
                 {coursesList.map((course, i) => (
                   <AnimatedSection key={course.id} delay={i * 0.08}>
-                    <Link href="/courses" className="block border border-white/10 p-6 hover:border-brand-500/50 transition-colors duration-300 group">
+                    <Link href={`/courses/${course.id}`} className="block border border-white/10 p-6 hover:border-brand-500/50 transition-colors duration-300 group">
                       <div className="flex items-start justify-between gap-4">
                         <div>
                           <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-brand-400 transition-colors">
