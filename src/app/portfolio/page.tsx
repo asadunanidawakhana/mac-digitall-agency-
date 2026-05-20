@@ -15,12 +15,72 @@ const categories = [
   { id: "fiverr", label: "Fiverr Gigs" },
 ];
 
-const websiteThumbnails = [
-  "/uploads/fiverr-gig-thumbnails/gig-web.png",
-  "/uploads/facebook-posts/ps-1.png",
-  "/uploads/business-cards/cd-1.png",
-  "/uploads/youtube-thumbnails/ps-2.png",
+const websiteColors = [
+  "from-blue-400 to-cyan-300",
+  "from-purple-400 to-pink-300",
+  "from-emerald-400 to-teal-300",
+  "from-orange-400 to-amber-300",
 ];
+
+function getDomain(url: string): string {
+  try {
+    return new URL(url).hostname.replace("www.", "");
+  } catch {
+    return url;
+  }
+}
+
+function WebsitePreview({ item, index }: { item: { title: string; description: string; tags: string[]; liveUrl: string }; index: number }) {
+  const domain = getDomain(item.liveUrl);
+  const colorClass = websiteColors[index % websiteColors.length];
+
+  return (
+    <a
+      href={item.liveUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group block"
+    >
+      <div className="border border-charcoal-100 mb-4 overflow-hidden transition-all duration-300 group-hover:border-brand-300 group-hover:shadow-lg">
+        {/* Browser chrome */}
+        <div className="bg-charcoal-100 px-4 py-2.5 flex items-center gap-3 border-b border-charcoal-200">
+          <div className="flex gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+            <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+            <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+          </div>
+          <div className="flex-1 bg-white rounded-md px-3 py-1 text-xs text-charcoal-500 truncate">
+            {domain}
+          </div>
+        </div>
+        {/* Preview area */}
+        <div className={`aspect-[4/3] bg-gradient-to-br ${colorClass} relative`}>
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-white/80 p-6">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" className="mb-3 opacity-60">
+              <circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+            </svg>
+            <span className="text-sm font-medium text-center opacity-80">{item.title}</span>
+          </div>
+          {/* Hover overlay */}
+          <div className="absolute inset-0 bg-charcoal-900/0 group-hover:bg-charcoal-900/40 transition-all duration-300 flex items-center justify-center">
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white px-5 py-2.5 text-xs font-semibold tracking-wide flex items-center gap-2">
+              Visit Live Site
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-wrap gap-2 mb-2">
+        {item.tags.map((tag) => (
+          <span key={tag} className="tag">{tag}</span>
+        ))}
+        <span className="tag-brand">Live Project</span>
+      </div>
+      <h3 className="heading-sm mb-1 group-hover:text-brand-700 transition-colors">{item.title}</h3>
+      <p className="body-sm">{item.description}</p>
+    </a>
+  );
+}
 
 export default function PortfolioPage() {
   const [active, setActive] = useState("all");
@@ -29,6 +89,8 @@ export default function PortfolioPage() {
   const filtered = active === "all"
     ? portfolioItems
     : portfolioItems.filter((p) => p.category === active);
+
+  let websiteIndex = 0;
 
   return (
     <>
@@ -68,58 +130,32 @@ export default function PortfolioPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {filtered.map((item, i) => (
               <AnimatedSection key={item.title} delay={i * 0.05}>
-                <div className="group">
-                  {item.liveUrl ? (
-                    <a
-                      href={item.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block"
-                    >
-                      <div className="relative aspect-[4/3] overflow-hidden border border-charcoal-100 mb-4 bg-gradient-to-br from-charcoal-100 to-cream-200">
-                        <div className="absolute inset-0 flex flex-col items-center justify-center text-charcoal-500 p-6">
-                          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="mb-3">
-                            <circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                          </svg>
-                          <span className="text-sm font-medium text-center">{item.title}</span>
-                        </div>
-                        <div className="absolute inset-0 bg-charcoal-900/0 group-hover:bg-charcoal-900/40 transition-all duration-300 flex items-center justify-center">
-                          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white px-5 py-2.5 text-xs font-semibold tracking-wide flex items-center gap-2">
-                            Visit Live Site
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  ) : (
-                    <div
-                      className="cursor-pointer"
-                      onClick={() => setSelectedImage(item.image)}
-                    >
-                      <div className="relative aspect-[4/3] overflow-hidden border border-charcoal-100 mb-4">
-                        <Image
-                          src={item.image}
-                          alt={item.title}
-                          fill
-                          className="object-cover transition-transform duration-700 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-charcoal-900/0 group-hover:bg-charcoal-900/30 transition-all duration-300 flex items-center justify-center">
-                          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 px-4 py-2 text-xs font-semibold tracking-wide">
-                            Click to View
-                          </div>
+                {item.liveUrl ? (
+                  <WebsitePreview item={item} index={websiteIndex++} />
+                ) : (
+                  <div className="group cursor-pointer" onClick={() => setSelectedImage(item.image)}>
+                    <div className="relative aspect-[4/3] overflow-hidden border border-charcoal-100 mb-4">
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-charcoal-900/0 group-hover:bg-charcoal-900/30 transition-all duration-300 flex items-center justify-center">
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 px-4 py-2 text-xs font-semibold tracking-wide">
+                          Click to View
                         </div>
                       </div>
                     </div>
-                  )}
-                  <div className="flex flex-wrap gap-2 mb-2">
-                    {item.tags.map((tag) => (
-                      <span key={tag} className="tag">{tag}</span>
-                    ))}
-                    {item.liveUrl && <span className="tag-brand">Live Project</span>}
+                    <div className="flex flex-wrap gap-2 mb-2">
+                      {item.tags.map((tag) => (
+                        <span key={tag} className="tag">{tag}</span>
+                      ))}
+                    </div>
+                    <h3 className="heading-sm mb-1 group-hover:text-brand-700 transition-colors">{item.title}</h3>
+                    <p className="body-sm">{item.description}</p>
                   </div>
-                  <h3 className="heading-sm mb-1 group-hover:text-brand-700 transition-colors">{item.title}</h3>
-                  <p className="body-sm">{item.description}</p>
-                </div>
+                )}
               </AnimatedSection>
             ))}
           </div>
