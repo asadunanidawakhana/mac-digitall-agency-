@@ -9,6 +9,10 @@ import ServiceCard from "@/components/ServiceCard";
 import { servicesList, testimonialsList, metrics, coursesList } from "@/lib/utils";
 
 const workTypes = [
+  { label: "Naeem Clinic", image: "/uploads/fiverr-gig-thumbnails/gig-web.png", category: "Website", liveUrl: "http://naeemclinic.great-site.net/" },
+  { label: "ClickForce Agency", image: "/uploads/facebook-posts/ps-1.png", category: "Website", liveUrl: "https://clickforceagency.great-site.net/" },
+  { label: "Asad Unani Shop", image: "/uploads/business-cards/cd-1.png", category: "E-Commerce", liveUrl: "https://asadunanishop.infinityfreeapp.com/" },
+  { label: "Aurangzaib Garments", image: "/uploads/youtube-thumbnails/ps-2.png", category: "Website", liveUrl: "https://aurangzaibgarments.netlify.app/" },
   { label: "Social Media Posts", image: "/uploads/facebook-posts/ps-1.png", category: "Facebook / Instagram" },
   { label: "Business Cards", image: "/uploads/business-cards/cd-1.png", category: "Print Design" },
   { label: "YouTube Thumbnails", image: "/uploads/youtube-thumbnails/ps-2.png", category: "Video Graphics" },
@@ -124,18 +128,39 @@ export default function HomePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {workTypes.map((item, i) => (
               <AnimatedSection key={item.label} delay={i * 0.08}>
-                <Link href="/portfolio" className="group block">
-                  <div className="relative aspect-[4/3] overflow-hidden border border-charcoal-100 mb-4">
-                    <Image
-                      src={item.image}
-                      alt={item.label}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                  </div>
-                  <span className="tag-brand mb-2 inline-block">{item.category}</span>
-                  <h3 className="heading-sm group-hover:text-brand-700 transition-colors">{item.label}</h3>
-                </Link>
+                {item.liveUrl ? (
+                  <a href={item.liveUrl} target="_blank" rel="noopener noreferrer" className="group block">
+                    <div className="relative aspect-[4/3] overflow-hidden border border-charcoal-100 mb-4 bg-gradient-to-br from-charcoal-100 to-cream-200">
+                      <div className="absolute inset-0 flex flex-col items-center justify-center text-charcoal-500 p-6">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="mb-2">
+                          <circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                        </svg>
+                        <span className="text-sm font-medium text-center">{item.label}</span>
+                      </div>
+                      <div className="absolute inset-0 bg-charcoal-900/0 group-hover:bg-charcoal-900/40 transition-all duration-300 flex items-center justify-center">
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white px-4 py-2 text-xs font-semibold tracking-wide flex items-center gap-1.5">
+                          Visit Site
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        </div>
+                      </div>
+                    </div>
+                    <span className="tag-brand mb-2 inline-block">{item.category}</span>
+                    <h3 className="heading-sm group-hover:text-brand-700 transition-colors">{item.label}</h3>
+                  </a>
+                ) : (
+                  <Link href="/portfolio" className="group block">
+                    <div className="relative aspect-[4/3] overflow-hidden border border-charcoal-100 mb-4">
+                      <Image
+                        src={item.image}
+                        alt={item.label}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                    </div>
+                    <span className="tag-brand mb-2 inline-block">{item.category}</span>
+                    <h3 className="heading-sm group-hover:text-brand-700 transition-colors">{item.label}</h3>
+                  </Link>
+                )}
               </AnimatedSection>
             ))}
           </div>
